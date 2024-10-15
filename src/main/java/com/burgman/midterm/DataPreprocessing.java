@@ -3,8 +3,8 @@ package com.burgman.midterm;
 import weka.core.Instances;
 import weka.core.converters.CSVLoader;
 import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.RemoveUseless;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
+import weka.filters.unsupervised.attribute.StringToNominal;
 import weka.filters.unsupervised.attribute.NumericToNominal;
 import java.io.File;
 
@@ -22,23 +22,21 @@ public class DataPreprocessing {
     public Instances handleMissingValues(Instances data) throws Exception {
         ReplaceMissingValues replaceMissing = new ReplaceMissingValues();
         replaceMissing.setInputFormat(data);
-        Instances newData = Filter.useFilter(data, replaceMissing);
-        return newData;
+        return Filter.useFilter(data, replaceMissing);
     }
 
-    // Scale numeric features (using WEKA's built-in scaling)
-    public Instances scaleNumericFeatures(Instances data) throws Exception {
-        RemoveUseless removeUseless = new RemoveUseless();
-        removeUseless.setInputFormat(data);
-        Instances scaledData = Filter.useFilter(data, removeUseless);
-        return scaledData;
+    // Convert string attributes to nominal
+    public Instances convertStringToNominal(Instances data) throws Exception {
+        StringToNominal stringToNominal = new StringToNominal();
+        stringToNominal.setAttributeRange("first-last"); // Apply to all string attributes
+        stringToNominal.setInputFormat(data);
+        return Filter.useFilter(data, stringToNominal);
     }
 
-    // Convert categorical attributes to nominal (if required)
+    // Convert categorical attributes to nominal (if necessary)
     public Instances convertToNominal(Instances data) throws Exception {
         NumericToNominal convert = new NumericToNominal();
         convert.setInputFormat(data);
-        Instances nominalData = Filter.useFilter(data, convert);
-        return nominalData;
+        return Filter.useFilter(data, convert);
     }
 }
