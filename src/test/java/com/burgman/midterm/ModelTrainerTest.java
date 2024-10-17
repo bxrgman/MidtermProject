@@ -18,7 +18,7 @@ public class ModelTrainerTest {
         modelTrainer = new ModelTrainer();
         dataPreprocessing = new DataPreprocessing();
         // Load and preprocess the dataset
-        data = dataPreprocessing.loadDataset("data/train.csv");
+        data = dataPreprocessing.loadDataset("data/trainmvn.csv");
         data = dataPreprocessing.handleMissingValues(data);
         data = dataPreprocessing.convertStringToNominal(data);
         data = dataPreprocessing.convertToNominal(data);
